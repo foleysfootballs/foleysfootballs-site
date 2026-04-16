@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact — Foley's Footballs</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,400&family=Barlow:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F0A05;--surface:#1A100A;--surface2:#231408;
+  --border:rgba(212,168,71,0.12);--border2:rgba(212,168,71,0.25);
+  --gold:#D4A847;--gold2:#B8882E;--leather:#7B4A1E;
+  --cream:#F5EFE6;--text:rgba(245,239,230,0.9);
+  --muted:rgba(245,239,230,0.45);--faint:rgba(245,239,230,0.18);
+  --sidebar:200px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
+
+/* SIDEBAR — identical to index.html */
+.sidebar{width:var(--sidebar);min-width:var(--sidebar);height:100vh;position:sticky;top:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid var(--border)}
+.logo-mark{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--gold);line-height:1}
+.logo-mark span{color:var(--cream)}
+.logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.nav{flex:1;padding:14px 0;overflow-y:auto}
+.nav-group{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--faint);padding:14px 20px 5px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:9px 20px;font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s}
+.nav-link:hover{color:var(--cream);background:rgba(255,255,255,0.03)}
+.nav-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(212,168,71,0.07)}
+.nav-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.sidebar-bottom{padding:16px 20px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.ebay-btn{display:block;text-align:center;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border2);padding:9px 12px;transition:all 0.15s}
+.ebay-btn:hover{background:rgba(212,168,71,0.1)}
+.trust-pill{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:center}
+.trust-dot{color:var(--gold);margin-right:4px}
+
+/* MAIN */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(15,10,5,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between}
+.topbar-left{font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:16px}
+.topbar-sep{color:var(--faint)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn-sm{font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding:7px 16px;cursor:pointer;border:none;transition:all 0.15s}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--faint);text-decoration:none;display:inline-block}
+.btn-outline:hover{color:var(--cream);border-color:var(--border2)}
+.btn-gold{background:var(--gold);color:#0F0A05;text-decoration:none;display:inline-block}
+.btn-gold:hover{background:var(--gold2)}
+.content{flex:1;padding:48px 28px 64px;max-width:680px}
+
+/* CONTACT FORM */
+.contact-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.contact-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
+.contact-h1{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--cream);line-height:0.95;margin-bottom:14px;letter-spacing:0.02em}
+.contact-sub{font-size:0.9rem;line-height:1.7;color:var(--muted);margin-bottom:32px;max-width:520px}
+.contact-sub strong{color:var(--cream);font-weight:500}
+
+/* DISCOUNT CALLOUT */
+.discount-note{
+  background:var(--surface);
+  border:1px solid rgba(147,197,253,0.2);
+  border-left:3px solid #93C5FD;
+  padding:14px 18px;
+  margin-bottom:32px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.discount-note-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.discount-note-text{font-size:0.84rem;line-height:1.6;color:rgba(147,197,253,0.85)}
+.discount-note-text strong{color:#93C5FD}
+
+/* FORM */
+.form-card{background:var(--surface);border:1px solid var(--border);padding:32px}
+.form-row{margin-bottom:22px}
+.form-row-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+input[type="text"],
+input[type="email"],
+select,
+textarea{
+  width:100%;
+  background:var(--surface2);
+  border:1px solid rgba(245,239,230,0.12);
+  color:var(--text);
+  font-family:'Barlow',sans-serif;
+  font-size:0.9rem;
+  padding:12px 14px;
+  outline:none;
+  transition:border-color 0.15s;
+  appearance:none;
+  -webkit-appearance:none;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus{border-color:var(--gold)}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23D4A847' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+select option{background:#1A100A;color:var(--cream)}
+textarea{resize:vertical;min-height:120px;line-height:1.6}
+.form-submit{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  background:var(--gold);color:#0F0A05;border:none;
+  padding:14px 36px;cursor:pointer;transition:all 0.15s;
+  width:100%;margin-top:6px;
+}
+.form-submit:hover{background:var(--gold2)}
+.form-submit:disabled{opacity:0.5;cursor:not-allowed}
+
+/* SUCCESS STATE */
+.success-state{display:none;text-align:center;padding:48px 24px}
+.success-state.visible{display:block}
+.success-icon{font-size:2.5rem;margin-bottom:16px}
+.success-h{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);margin-bottom:10px;letter-spacing:0.02em}
+.success-body{font-size:0.9rem;color:var(--muted);line-height:1.7;margin-bottom:28px}
+.success-back{font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:transparent;color:var(--gold);border:1px solid var(--border2);padding:10px 24px;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.15s}
+.success-back:hover{background:rgba(212,168,71,0.08)}
+
+/* MOBILE */
+@media(max-width:780px){
+  .sidebar{display:none}
+  .content{padding:32px 20px 48px}
+  .form-row-split{grid-template-columns:1fr}
+  .form-card{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">Foley's <span>Footballs</span></div>
+    <div class="logo-sub">foleysfootballs.com</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-group">Store</div>
+    <a class="nav-link" href="/index.html"><span class="nav-icon">&#x2B21;</span>Home</a>
+    <a class="nav-link" href="/index.html"><span class="nav-icon">&#x25C9;</span>Shop</a>
+    <div class="nav-group">Info</div>
+    <a class="nav-link" href="/index.html"><span class="nav-icon">&#x25CE;</span>The Process</a>
+    <a class="nav-link" href="/index.html"><span class="nav-icon">&#x2605;</span>Reviews</a>
+    <a class="nav-link" href="/index.html"><span class="nav-icon">&#x25F7;</span>Our Story</a>
+    <a class="nav-link active" href="/contact.html"><span class="nav-icon">&#x2709;</span>Contact</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <a class="ebay-btn" href="https://www.ebay.com/usr/foleysfootballs" target="_blank">&#x2197; View eBay Store</a>
+    <div class="trust-pill"><span class="trust-dot">&#x25CF;</span>Registered in Pennsylvania</div>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <span>Foley's Footballs</span>
+      <span class="topbar-sep">&#xB7;</span>
+      <span>Get in Touch</span>
+    </div>
+    <div class="topbar-right">
+      <a class="btn-sm btn-outline" href="/index.html">&#x2190; Back to Site</a>
+      <a class="btn-sm btn-gold" href="/index.html">Shop Now</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <div class="contact-eyebrow">Foley's Footballs</div>
+    <h1 class="contact-h1">Get in Touch.</h1>
+    <p class="contact-sub">Questions about a ball, want to negotiate on an eBay listing, or just curious about what we have in stock? <strong>We typically respond within a few hours.</strong></p>
+
+    <div class="discount-note">
+      <span class="discount-note-icon">&#x1F4B0;</span>
+      <div class="discount-note-text"><strong>eBay buyers:</strong> Message us here before purchasing on eBay. eBay&#x2019;s fees drive the price up &#x2014; reach out and we&#x2019;ll work out a better deal directly.</div>
+    </div>
+
+    <!-- FORM (shown by default) -->
+    <div class="form-card" id="form-wrap">
+      <form id="contact-form"
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST">
+
+        <!-- Hidden field for Formspree redirect prevention -->
+        <input type="hidden" name="_subject" value="New message from foleysfootballs.com"/>
+
+        <div class="form-row-split">
+          <div>
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="First and last name" required/>
+          </div>
+          <div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="inquiry">What's this about?</label>
+          <select id="inquiry" name="inquiry" required>
+            <option value="" disabled selected>Select a topic&#x2026;</option>
+            <option value="eBay Ball — Discount Request">eBay Ball &#x2014; I want to discuss a discount</option>
+            <option value="Website Ball — Purchase Inquiry">Website Ball &#x2014; I want to buy a listed ball</option>
+            <option value="Custom Order">Custom Order &#x2014; Something specific in mind</option>
+            <option value="General Info / Question">General Info / Question</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us what you&#x2019;re looking for, any specific questions, or which ball caught your eye&#x2026;" required></textarea>
+        </div>
+
+        <button type="submit" class="form-submit" id="submit-btn">Send Message</button>
+      </form>
+    </div>
+
+    <!-- SUCCESS STATE (hidden until form submitted) -->
+    <div class="success-state" id="success-state">
+      <div class="success-icon">&#x1F3C8;</div>
+      <div class="success-h">Message Sent.</div>
+      <p class="success-body">Thanks for reaching out. We typically respond within a few hours &#x2014; keep an eye on your inbox.<br/><br/>In the meantime, feel free to browse what&#x2019;s currently available.</p>
+      <a class="success-back" href="/index.html">&#x2190; Back to Listings</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Pre-fill inquiry dropdown from URL param e.g. contact.html?topic=ebay
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var topic = params.get('topic');
+  if(!topic) return;
+  var sel = document.getElementById('inquiry');
+  var map = {
+    'ebay':    'eBay Ball \u2014 I want to discuss a discount',
+    'site':    'Website Ball \u2014 I want to buy a listed ball',
+    'custom':  'Custom Order',
+    'general': 'General Info / Question'
+  };
+  var val = map[topic];
+  if(val){
+    for(var i=0;i<sel.options.length;i++){
+      if(sel.options[i].value.indexOf(val.split('\u2014')[0].trim()) !== -1){
+        sel.selectedIndex = i;
+        break;
+      }
+    }
+  }
+})();
+
+// Handle form submission via fetch (keeps user on page)
+document.getElementById('contact-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending\u2026';
+
+  var data = new FormData(this);
+  fetch(this.action, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(function(res){
+    if(res.ok){
+      document.getElementById('form-wrap').style.display = 'none';
+      document.getElementById('success-state').classList.add('visible');
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+      alert('Something went wrong. Please email us directly at foleysfootballs@gmail.com');
+    }
+  })
+  .catch(function(){
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+    alert('Something went wrong. Please email us directly at foleysfootballs@gmail.com');
+  });
+});
+</script>
+</body>
+</html>
