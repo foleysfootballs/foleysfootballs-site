@@ -122,9 +122,8 @@ def build_html(active, sold_list):
         tag_label, tag_type = tag_for_title(item["title"])
         badge_cls = "b-special" if tag_type in ("special","logo") else "b-site"
         first_img = item["images"][0] if item["images"] else ""
-item_id = item['id']
-        img_html = f'<img class="tile-main-img" src="{first_img}" alt="ball photo" loading="lazy" onclick="openLightbox(\'{item_id}\',0)"/>' if first_img else '<div class="tile-img-placeholder">&#x1F3C8;</div>'
-        discount_url = f"/contact.html?topic=site&item={item['id']}"
+        item_id = item['id']
+        img_html = f'<img class="tile-main-img" src="{first_img}" alt="ball photo" loading="lazy" onclick="openLightbox(\'{item_id}\',0)"/>' if first_img else '<div class="tile-img-placeholder">&#x1F3C8;</div>'        discount_url = f"/contact.html?topic=site&item={item['id']}"
         ebay_url     = item["url"]
         return f"""
         <div class="tile tile-active" id="tile-{item['id']}">
