@@ -62,29 +62,29 @@ def parse_listing(html, item_id, fallback_title, fallback_price):
         except:
             pass
 
-    # Extract images — full size from eBay CDN
-    imgs = re.findall(r'https://i\.ebayimg\.com/images/g/[A-Za-z0-9]+/s-l(?:1600|500)\.(?:jpg|webp)', html)
-    # Deduplicate while preserving order
+    # Extract images from eBay HTML
+    # eBay lazy-loads most images via JS — only thumbnails (s-l140) are in raw HTML
+    # Strategy: find all unique image hashes from any size, upgrade to s-l1600
     seen = set()
     unique_imgs = []
-    for img in imgs:
-        # Normalize to jpg
-        img = re.sub(r'\.webp$', '.jpg', img)
-        key = re.search(r'/g/([A-Za-z0-9]+)/', img)
-        if key and key.group(1) not in seen:
-            seen.add(key.group(1))
-            unique_imgs.append(img)
 
-    # Fallback: try s-l500
-    if not unique_imgs:
-        imgs500 = re.findall(r'https://i\.ebayimg\.com/images/g/[A-Za-z0-9]+/s-l(?:300|140)\.(?:jpg|webp)', html)
-        for img in imgs500:
-            img = re.sub(r's-l(?:300|140)', 's-l1600', img)
-            img = re.sub(r'\.webp$', '.jpg', img)
-            key = re.search(r'/g/([A-Za-z0-9]+)/', img)
-            if key and key.group(1) not in seen:
-                seen.add(key.group(1))
-                unique_imgs.append(img)
+    # Pattern to find any eBay CDN image hash
+    all_ebay_imgs = re.findall(
+        r'https://i\.ebayimg\.com/images/g/([A-Za-z0-9]+)/s-l[0-9]+\.(?:jpg|webp)',
+        html
+    )
+    # Also check thumbs path
+    all_ebay_imgs += re.findall(
+        r'https://i\.ebayimg\.com/thumbs/images/g/([A-Za-z0-9]+)/s-l[0-9]+\.(?:jpg|webp)',
+        html
+    )
+
+    for img_hash in all_ebay_imgs:
+        if img_hash not in seen:
+            seen.add(img_hash)
+            # Always construct the full-size URL from the hash
+            full_url = f"https://i.ebayimg.com/images/g/{img_hash}/s-l1600.jpg"
+            unique_imgs.append(full_url)
 
     return {
         "id":     item_id,
