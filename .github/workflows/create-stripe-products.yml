@@ -1,0 +1,31 @@
+name: Create Stripe Products (Run Once)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create Stripe products + payment links
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: python create_stripe_products.py
+
+      - name: Commit stripe_products.json
+        run: |
+          git config user.name  "foleysfootballs-bot"
+          git config user.email "foleysfootballs@gmail.com"
+          git add stripe_products.json
+          git diff --staged --quiet || git commit -m "Add Stripe product links"
+          git push
