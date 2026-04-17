@@ -1,0 +1,103 @@
+{
+  "products": [
+    {
+      "id": "236712073331",
+      "product_id": "prod_ULxBu3NXSLuAQR",
+      "price_id": "price_1TNFHHHqKPMjUS03r9EfL1J7",
+      "payment_link": "https://buy.stripe.com/3cIaEXgQg39X8JIcue0Jq00",
+      "price": 175,
+      "title": "Game-Ready Duke",
+      "tag": "Standard"
+    },
+    {
+      "id": "236712078029",
+      "product_id": "prod_ULxBItSzHq8XjA",
+      "price_id": "price_1TNFHIHqKPMjUS03XmtnarE9",
+      "payment_link": "https://buy.stripe.com/9B63cv43ubGt3po8dY0Jq01",
+      "price": 175,
+      "title": "Game-Ready Duke",
+      "tag": "Standard"
+    },
+    {
+      "id": "236712089570",
+      "product_id": "prod_ULxBX7r3XIjAWT",
+      "price_id": "price_1TNFHJHqKPMjUS03L8ZrSYFK",
+      "payment_link": "https://buy.stripe.com/cNiaEX8jK8uhcZY51M0Jq02",
+      "price": 175,
+      "title": "Game-Ready Duke",
+      "tag": "Standard"
+    },
+    {
+      "id": "236712095546",
+      "product_id": "prod_ULxBxdc41ljrYR",
+      "price_id": "price_1TNFHJHqKPMjUS035diJrlFJ",
+      "payment_link": "https://buy.stripe.com/aFa5kD9nObGt8JI2TE0Jq03",
+      "price": 175,
+      "title": "Game-Ready Duke",
+      "tag": "Standard"
+    },
+    {
+      "id": "236608126994",
+      "product_id": "prod_ULxBp06MngFsln",
+      "price_id": "price_1TNFHKHqKPMjUS03JSqu56eV",
+      "payment_link": "https://buy.stripe.com/28E14n8jKfWJ9NM2TE0Jq04",
+      "price": 189,
+      "title": "Game-Ready Duke",
+      "tag": "Standard"
+    },
+    {
+      "id": "236568479439",
+      "product_id": "prod_ULxB67lqbs3zmq",
+      "price_id": "price_1TNFHLHqKPMjUS03NwaDtPI2",
+      "payment_link": "https://buy.stripe.com/cNidR943ucKxcZYgKu0Jq05",
+      "price": 196,
+      "title": "Rams Logo Duke",
+      "tag": "Rams Logo"
+    },
+    {
+      "id": "236568493852",
+      "product_id": "prod_ULxBZ5QI61diXw",
+      "price_id": "price_1TNFHLHqKPMjUS03OiXebb0p",
+      "payment_link": "https://buy.stripe.com/9B66oHdE4fWJ2lkcue0Jq06",
+      "price": 181,
+      "title": "LA Rams Duke",
+      "tag": "Rams Logo"
+    },
+    {
+      "id": "236568496267",
+      "product_id": "prod_ULxBoSjzvRRVjz",
+      "price_id": "price_1TNFHMHqKPMjUS03Nudyem3x",
+      "payment_link": "https://buy.stripe.com/3cI4gzbvWeSF4tsdyi0Jq07",
+      "price": 181,
+      "title": "Rams Logo Duke",
+      "tag": "Rams Logo"
+    },
+    {
+      "id": "236513442391",
+      "product_id": "prod_ULxBYYI8Y67AQL",
+      "price_id": "price_1TNFHNHqKPMjUS03Z4cbK8zv",
+      "payment_link": "https://buy.stripe.com/3cIeVdcA039X6BA8dY0Jq08",
+      "price": 225,
+      "title": "Jets Team Issued",
+      "tag": "Team Issued"
+    },
+    {
+      "id": "236513742095",
+      "product_id": "prod_ULxBMYqgOkBT9D",
+      "price_id": "price_1TNFHOHqKPMjUS03ocskTWXL",
+      "payment_link": "https://buy.stripe.com/28E7sL6bC8uh0dcfGq0Jq09",
+      "price": 225,
+      "title": "100th Season Duke",
+      "tag": "100th Season"
+    },
+    {
+      "id": "236513750225",
+      "product_id": "prod_ULxBAsPzkWdACY",
+      "price_id": "price_1TNFHOHqKPMjUS03ojD1kbvl",
+      "payment_link": "https://buy.stripe.com/cNi14n2ZqbGt3po65Q0Jq0a",
+      "price": 389,
+      "title": "2x Rams Duke",
+      "tag": "Double Rams"
+    }
+  ]
+}
