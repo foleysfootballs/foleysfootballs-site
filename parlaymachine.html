@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parlay Calculator — Foley's Footballs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --leather: #1a1108;
+    --leather-mid: #2b1e0e;
+    --leather-light: #3d2c12;
+    --leather-border: #4e3818;
+    --tan: #c8955a;
+    --tan-light: #e0b882;
+    --tan-dim: #8a6035;
+    --cream: #f2e8d5;
+    --cream-dim: #c9b99a;
+    --sidebar-w: 220px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--leather);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--leather-mid);
+    border-right: 1px solid var(--leather-border);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--tan-light);
+    line-height: 1.3;
+    margin-bottom: 2rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    display: block;
+  }
+  .sidebar-logo span { display: block; font-size: 0.7rem; color: var(--tan-dim); font-family: 'DM Sans', sans-serif; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px; }
+
+  .nav-section { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tan-dim); margin: 1.4rem 0 0.5rem; }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+  }
+  .nav-link:hover { background: var(--leather-light); color: var(--cream); }
+  .nav-link.active { background: var(--leather-light); color: var(--tan-light); }
+  .nav-icon { font-size: 0.85rem; width: 16px; text-align: center; opacity: 0.7; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--leather-border);
+    font-size: 0.7rem;
+    color: var(--tan-dim);
+    line-height: 1.6;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 3rem 3.5rem;
+    max-width: 860px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--tan-dim);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .back-link:hover { color: var(--tan-light); }
+  .back-link::before { content: '←'; font-size: 0.9rem; }
+
+  .page-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tan-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    color: var(--tan-light);
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  .page-title em { font-style: italic; color: var(--cream); }
+
+  .page-sub {
+    font-size: 0.9rem;
+    color: var(--cream-dim);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── CALCULATOR CARD ── */
+  .calc-card {
+    background: var(--leather-mid);
+    border: 1px solid var(--leather-border);
+    border-radius: 12px;
+    padding: 2rem 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .calc-section-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tan-dim);
+    margin-bottom: 1.25rem;
+  }
+
+  /* Input rows */
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1.25rem;
+  }
+  .input-label {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    min-width: 110px;
+  }
+  .slider-wrap { flex: 1; }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--leather-border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--tan);
+    border: 2px solid var(--leather-mid);
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(200,149,90,0.2);
+    transition: box-shadow 0.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { box-shadow: 0 0 0 5px rgba(200,149,90,0.3); }
+  input[type=range]::-moz-range-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--tan);
+    border: 2px solid var(--leather-mid);
+    cursor: pointer;
+  }
+
+  .num-input-wrap {
+    position: relative;
+    width: 96px;
+    flex-shrink: 0;
+  }
+  .num-input-wrap .prefix {
+    position: absolute;
+    left: 9px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.82rem;
+    color: var(--tan-dim);
+    pointer-events: none;
+  }
+  input[type=number] {
+    width: 100%;
+    padding: 7px 8px 7px 20px;
+    background: var(--leather-light);
+    border: 1px solid var(--leather-border);
+    border-radius: 6px;
+    color: var(--tan-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    outline: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    transition: border-color 0.15s;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type=number]:focus { border-color: var(--tan); }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--leather-border);
+    margin: 1.75rem 0;
+  }
+
+  /* Stat cards */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 1.75rem;
+  }
+  .stat-card {
+    background: var(--leather-light);
+    border: 1px solid var(--leather-border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+  }
+  .stat-lbl { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tan-dim); margin-bottom: 6px; }
+  .stat-big { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 400; color: var(--tan-light); line-height: 1; }
+  .stat-sub { font-size: 0.68rem; color: var(--tan-dim); margin-top: 4px; }
+
+  /* Legs selector */
+  .legs-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .legs-label { font-size: 0.82rem; color: var(--cream-dim); min-width: 110px; }
+  .legs-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .leg-btn {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--leather-border);
+    background: transparent;
+    color: var(--cream-dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .leg-btn:hover { border-color: var(--tan-dim); color: var(--cream); }
+  .leg-btn.active { background: var(--tan); border-color: var(--tan); color: var(--leather); font-weight: 500; }
+
+  /* Leg cards */
+  .leg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  .leg-card {
+    background: var(--leather);
+    border: 1px solid var(--leather-border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .leg-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--tan);
+    opacity: 0.5;
+  }
+  .leg-card-label { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tan-dim); margin-bottom: 6px; }
+  .leg-card-odds { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--tan-light); line-height: 1; }
+  .leg-card-sub { font-size: 0.68rem; color: var(--cream-dim); margin-top: 5px; line-height: 1.4; }
+
+  .disclaimer {
+    font-size: 0.72rem;
+    color: var(--tan-dim);
+    line-height: 1.6;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--leather-border);
+  }
+
+  @media (max-width: 720px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 2rem 1.25rem; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-title { font-size: 1.9rem; }
+    .input-row { flex-wrap: wrap; }
+    .slider-wrap { order: 3; min-width: 100%; }
+    .num-input-wrap { width: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a class="sidebar-logo" href="https://foleysfootballs.com">
+    Foley's Footballs
+    <span>foleysfootballs.com</span>
+  </a>
+
+  <div class="nav-section">Store</div>
+  <a class="nav-link" href="https://foleysfootballs.com/#store"><span class="nav-icon">⬡</span> Home</a>
+  <a class="nav-link" href="https://foleysfootballs.com/#process"><span class="nav-icon">◎</span> The Process</a>
+  <a class="nav-link" href="https://foleysfootballs.com/#reviews"><span class="nav-icon">★</span> Reviews</a>
+  <a class="nav-link" href="https://foleysfootballs.com/#story"><span class="nav-icon">◷</span> Our Story</a>
+
+  <div class="nav-section">More</div>
+  <a class="nav-link" href="https://foleysfootballs.com/contact"><span class="nav-icon">✉</span> Contact</a>
+  <a class="nav-link" href="https://www.ebay.com/usr/foleysfootballs" target="_blank"><span class="nav-icon">↗</span> View eBay Store</a>
+  <a class="nav-link active" href="/parlaymachine"><span class="nav-icon">◈</span> Parlay Calculator</a>
+
+  <div class="sidebar-footer">● Registered in Pennsylvania</div>
+</aside>
+
+<main class="main">
+  <a class="back-link" href="https://foleysfootballs.com">Back to Foley's Footballs</a>
+
+  <p class="page-eyebrow">Tools &amp; Calculators</p>
+  <h1 class="page-title">Parlay <em>Machine.</em></h1>
+  <p class="page-sub">Set your bet size and target payout — slide or type. We'll show you what odds you need and how to split them across equal legs.</p>
+
+  <div class="calc-card">
+    <p class="calc-section-title">Your Parlay</p>
+
+    <div class="input-row">
+      <span class="input-label">Bet size</span>
+      <div class="slider-wrap">
+        <input type="range" id="bet-range" min="10" max="500" step="5" value="100">
+      </div>
+      <div class="num-input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="bet-input" min="1" max="100000" value="100">
+      </div>
+    </div>
+
+    <div class="input-row">
+      <span class="input-label">Target payout</span>
+      <div class="slider-wrap">
+        <input type="range" id="payout-range" min="200" max="5000" step="50" value="1300">
+      </div>
+      <div class="num-input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="payout-input" min="1" max="1000000" value="1300">
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-lbl">Multiplier</div>
+        <div class="stat-big" id="mult">—</div>
+        <div class="stat-sub">payout ÷ bet</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Net profit</div>
+        <div class="stat-big" id="profit">—</div>
+        <div class="stat-sub">payout − stake</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Single-leg odds</div>
+        <div class="stat-big" id="american">—</div>
+        <div class="stat-sub">American format</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <p class="calc-section-title">Equal-odds breakdown</p>
+
+    <div class="legs-row">
+      <span class="legs-label">Number of legs</span>
+      <div class="legs-btns" id="leg-btns">
+        <button class="leg-btn" data-n="2">2</button>
+        <button class="leg-btn active" data-n="3">3</button>
+        <button class="leg-btn" data-n="4">4</button>
+        <button class="leg-btn" data-n="5">5</button>
+        <button class="leg-btn" data-n="6">6</button>
+        <button class="leg-btn" data-n="7">7</button>
+      </div>
+    </div>
+
+    <div class="leg-grid" id="leg-grid"></div>
+
+    <p class="disclaimer">Parlay calculations assume no vig or juice. Real sportsbooks shade odds slightly, so build in a small buffer. This tool is for informational purposes only.</p>
+  </div>
+</main>
+
+<script>
+  let numLegs = 3;
+  let currentBet = 100;
+  let currentPayout = 1300;
+
+  const betRange = document.getElementById('bet-range');
+  const betInput = document.getElementById('bet-input');
+  const payoutRange = document.getElementById('payout-range');
+  const payoutInput = document.getElementById('payout-input');
+  const multEl = document.getElementById('mult');
+  const profitEl = document.getElementById('profit');
+  const americanEl = document.getElementById('american');
+  const legGrid = document.getElementById('leg-grid');
+
+  function toAmerican(dec) {
+    if (dec >= 2) return '+' + Math.round((dec - 1) * 100);
+    return String(Math.round(-100 / (dec - 1)));
+  }
+
+  function fmt(n) { return '$' + Number(n).toLocaleString(); }
+
+  function update() {
+    const bet = currentBet;
+    const payout = currentPayout;
+    if (!bet || !payout || bet <= 0 || payout <= bet) return;
+
+    const mult = payout / bet;
+    multEl.textContent = mult.toFixed(2) + 'x';
+    profitEl.textContent = fmt(payout - bet);
+    americanEl.textContent = toAmerican(mult);
+
+    const legDec = Math.pow(mult, 1 / numLegs);
+    const legAm = toAmerican(legDec);
+    const impliedPct = (1 / legDec * 100).toFixed(1);
+
+    legGrid.innerHTML = '';
+    for (let i = 1; i <= numLegs; i++) {
+      const d = document.createElement('div');
+      d.className = 'leg-card';
+      d.innerHTML = `<div class="leg-card-label">Leg ${i}</div>
+        <div class="leg-card-odds">${legAm}</div>
+        <div class="leg-card-sub">${legDec.toFixed(3)} decimal<br>${impliedPct}% implied prob.</div>`;
+      legGrid.appendChild(d);
+    }
+  }
+
+  betRange.addEventListener('input', () => {
+    currentBet = parseFloat(betRange.value);
+    betInput.value = currentBet;
+    update();
+  });
+
+  betInput.addEventListener('input', () => {
+    const v = parseFloat(betInput.value);
+    if (!v || v <= 0) return;
+    currentBet = v;
+    if (v >= 10 && v <= 500) betRange.value = v;
+    update();
+  });
+
+  payoutRange.addEventListener('input', () => {
+    currentPayout = parseFloat(payoutRange.value);
+    payoutInput.value = currentPayout;
+    update();
+  });
+
+  payoutInput.addEventListener('input', () => {
+    const v = parseFloat(payoutInput.value);
+    if (!v || v <= 0) return;
+    currentPayout = v;
+    if (v >= 200 && v <= 5000) payoutRange.value = v;
+    update();
+  });
+
+  document.getElementById('leg-btns').addEventListener('click', e => {
+    const btn = e.target.closest('.leg-btn');
+    if (!btn) return;
+    numLegs = parseInt(btn.dataset.n);
+    document.querySelectorAll('.leg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    update();
+  });
+
+  update();
+</script>
+</body>
+</html>
